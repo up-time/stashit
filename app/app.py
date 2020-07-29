@@ -56,7 +56,7 @@ def split(splitter, item):
 
 @app.route('/kensiespace')
 def kensiespace():
-    return 'Love you so much, your the best thing in my life{}'.format()
+    return 'Love you so much, your the best thing in my life'
 
 
 @app.route("/")
