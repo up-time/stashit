@@ -54,9 +54,9 @@ def split(splitter, item):
     splitItems = item.split(splitter)
     return '{}'.format(splitItems)
 
-@app.route('/kensiespace')
-def kensiespace():
-    return 'Love you so much, your the best thing in my life'
+@app.route('/healthcheck')
+def healthcheck():
+    return 'healthy'
 
 
 @app.route("/")
