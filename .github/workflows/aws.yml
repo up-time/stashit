@@ -1,18 +1,24 @@
 on:
   push:
-    branches: [ master ]name: Deploy to Amazon ECSjobs:
+    branches: [ master ]
+name: Deploy to Amazon ECS
+jobs:
   deploy:
     name: Deploy
-    runs-on: ubuntu-latest    steps:
+    runs-on: ubuntu-latest
+    steps:
     - name: Checkout
-      uses: actions/checkout@v2    - name: Configure AWS credentials
+      uses: actions/checkout@v2
+    - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-west-1    - name: Login to Amazon ECR
+        aws-region: us-west-1
+    - name: Login to Amazon ECR
       id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v1    - name: Build, tag, and push image to Amazon ECR
+      uses: aws-actions/amazon-ecr-login@v1
+    - name: Build, tag, and push image to Amazon ECR
       id: build-image
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
@@ -32,7 +38,8 @@ on:
       with:
         task-definition: deploy/ecs.staging.json
         container-name: stashit
-        image: ${{ steps.build-image.outputs.image }}    - name: Deploy stashit Stack to Amazon ECS service
+        image: ${{ steps.build-image.outputs.image }}
+    - name: Deploy stashit Stack to Amazon ECS service
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
         task-definition: ${{ steps.image-replace.outputs.task-definition }}
