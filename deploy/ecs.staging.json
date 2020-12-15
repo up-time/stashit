@@ -23,6 +23,12 @@
 			"name": "stashit",
 			"essential": true,
 			"image": "",
+			"secrets": [
+				{
+					"name": "SSH_PUBLIC_KEY",
+					"valueFrom": "arn:aws:ssm:us-west-1:391927616943:parameter/STAGING_AWS_SSH_ECS_KEY"
+				}
+			],
 			"logConfiguration": {
 				"logDriver": "awslogs",
 				"options": {
@@ -36,7 +42,12 @@
 					"containerPort": 8080,
 					"hostPort": 8080,
 					"protocol": "tcp"
-				}
+				},
+                {
+                    "hostPort": 22,
+                    "protocol": "tcp",
+                    "containerPort": 22
+                }
 			],
 			"environment": [
 				{
