@@ -6,4 +6,4 @@ COPY . .
 RUN ls
 RUN pip install -r requirements.txt
 EXPOSE 8080 22
-ENTRYPOINT ["startup.sh"]
+CMD [./startup.sh]
