@@ -3,7 +3,7 @@ WORKDIR /app
 RUN apt-get update -y
 RUN apt-get install -y openssh-server
 COPY . .
-RUN ls
 RUN pip install -r requirements.txt
 EXPOSE 8080 22
-ENTRYPOINT ["bash","startup.sh"]
+RUN chmod a+x entrypoint.sh
+ENTRYPOINT ["bash","entrypoint.sh"]
