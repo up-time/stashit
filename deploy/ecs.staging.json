@@ -67,7 +67,7 @@
     {
       "name":"efs-html",
       "efsVolumeConfiguration":{
-        "fileSystemId":"fs-731c196a",
+        "fileSystemId":"fs-901e1b89",
         "transitEncryption":"ENABLED"
       }
     }
