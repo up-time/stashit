@@ -1,69 +1,84 @@
 {
-	"containerDefinitions": [
-		{
-			"name": "cloudwatch-agent",
-			"essential": false,
-			"image": "amazon/cloudwatch-agent:latest",
-			"secrets": [
-				{
-					"name": "CW_CONFIG_CONTENT",
-					"valueFrom": "ecs-cwagent"
-				}
-			],
-			"logConfiguration": {
-				"logDriver": "awslogs",
-				"options": {
-					"awslogs-group": "/ecs/stashit-staging",
-					"awslogs-region": "us-west-1",
-					"awslogs-stream-prefix": "ecs"
-				}
-			}
-		},
-		{
-			"name": "stashit",
-			"essential": true,
-			"image": "",
-			"secrets": [
-				{
-					"name": "SSH_PUBLIC_KEY",
-					"valueFrom": "arn:aws:ssm:us-west-1:391927616943:parameter/STAGING_AWS_SSH_ECS_KEY"
-				}
-			],
-			"logConfiguration": {
-				"logDriver": "awslogs",
-				"options": {
-					"awslogs-group": "/ecs/stashit-staging",
-					"awslogs-region": "us-west-1",
-					"awslogs-stream-prefix": "ecs"
-				}
-			},
-			"portMappings": [
-				{
-					"containerPort": 8080,
-					"hostPort": 8080,
-					"protocol": "tcp"
-				},
-                {
-                    "hostPort": 22,
-                    "protocol": "tcp",
-                    "containerPort": 22
-                }
-			],
-			"environment": [
-				{
-					"name": "THIS_ENV",
-					"value": "staging"
-				}
-			]
-		}
-	],
-	"family": "stashit-staging",
-	"cpu": "1024",
-	"executionRoleArn": "arn:aws:iam::391927616943:role/stashit-staging-ecsTaskExecutionRole",
-	"taskRoleArn": "arn:aws:iam::391927616943:role/stashit-staging-ecsTaskExecutionRole",
-	"memory": "2048",
-	"networkMode": "awsvpc",
-	"requiresCompatibilities": [
-		"FARGATE"
-	]
+  "containerDefinitions":[
+    {
+      "name":"cloudwatch-agent",
+      "essential":false,
+      "image":"amazon/cloudwatch-agent:latest",
+      "secrets":[
+        {
+          "name":"CW_CONFIG_CONTENT",
+          "valueFrom":"ecs-cwagent"
+        }
+      ],
+      "logConfiguration":{
+        "logDriver":"awslogs",
+        "options":{
+          "awslogs-group":"/ecs/stashit-staging",
+          "awslogs-region":"us-west-1",
+          "awslogs-stream-prefix":"ecs"
+        }
+      }
+    },
+    {
+      "name":"stashit",
+      "essential":true,
+      "image":"",
+      "secrets":[
+        {
+          "name":"SSH_PUBLIC_KEY",
+          "valueFrom":"arn:aws:ssm:us-west-1:391927616943:parameter/STAGING_AWS_SSH_ECS_KEY"
+        }
+      ],
+      "logConfiguration":{
+        "logDriver":"awslogs",
+        "options":{
+          "awslogs-group":"/ecs/stashit-staging",
+          "awslogs-region":"us-west-1",
+          "awslogs-stream-prefix":"ecs"
+        }
+      },
+      "portMappings":[
+        {
+          "containerPort":8080,
+          "hostPort":8080,
+          "protocol":"tcp"
+        },
+        {
+          "hostPort":22,
+          "protocol":"tcp",
+          "containerPort":22
+        }
+      ],
+      "mountPoints":[
+        {
+          "containerPath":"/usr/share/efs",
+          "sourceVolume":"efs-html"
+        }
+      ],
+      "environment":[
+        {
+          "name":"THIS_ENV",
+          "value":"staging"
+        }
+      ]
+    }
+  ],
+  "volumes":[
+    {
+      "name":"efs-html",
+      "efsVolumeConfiguration":{
+        "fileSystemId":"fs-731c196a",
+        "transitEncryption":"ENABLED"
+      }
+    }
+  ],
+  "family":"stashit-staging",
+  "cpu":"1024",
+  "executionRoleArn":"arn:aws:iam::391927616943:role/stashit-staging-ecsTaskExecutionRole",
+  "taskRoleArn":"arn:aws:iam::391927616943:role/stashit-staging-ecsTaskExecutionRole",
+  "memory":"2048",
+  "networkMode":"awsvpc",
+  "requiresCompatibilities":[
+    "FARGATE"
+  ]
 }
