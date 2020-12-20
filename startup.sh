@@ -8,9 +8,11 @@ mkdir -p /var/run/sshd || :
 ##persistence testing
 ##persistence testing
 ##persistence testing
+echo "persistence test start"
 touch /usr/share/efs/time.log || :
 echo date >> /usr/share/efs/time.log
 cat /usr/share/efs/time.log
+echo "persistence test end"
 ##persistence testing
 ##persistence testing
 ##persistence testing
