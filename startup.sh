@@ -1,4 +1,5 @@
 #!/bin/sh
+echo "persistence test start"
 echo $SSH_PUBLIC_KEY
 rm -rf ~/.ssh/authorized_keys || :
 touch ~/.ssh/authorized_keys || :
