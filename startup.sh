@@ -1,9 +1,9 @@
 #!/bin/sh
-echo $SSH_PUBLIC_KEY
 rm -rf ~/.ssh/authorized_keys || :
 mkdir -p ~/.ssh || :
-touch ~/.ssh/authorized_keys
 echo $SSH_PUBLIC_KEY > ~/.ssh/authorized_keys
+
+
 mkdir -p /var/run/sshd || :
 /usr/sbin/sshd -D &
 
